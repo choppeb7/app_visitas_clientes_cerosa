@@ -5,7 +5,8 @@
 import streamlit as st
 from sqlalchemy import create_engine, text
 from datetime import date
-
+from dotenv import load_dotenv
+import os
 # ============================================================
 # CONFIGURACIÓN GENERAL
 # ============================================================
@@ -22,14 +23,14 @@ st.caption("Formulario interno para registrar visitas de vendedores a clientes."
 # ============================================================
 # CONEXIÓN A POSTGRESQL
 # ============================================================
-
+load_dotenv()
 @st.cache_resource
 def get_engine():
-    user = st.secrets["PGUSER"]
-    password = st.secrets["PGPASSWORD"]
-    host = st.secrets["PGHOST"]
-    port = st.secrets["PGPORT"]
-    dbname = st.secrets["PGDATABASE"]
+    user = os.getenv("PGUSER") or st.secrets.get("PGUSER")
+    password = os.getenv("PGPASSWORD") or st.secrets.get("PGPASSWORD")
+    host = os.getenv("PGHOST") or st.secrets.get("PGHOST")
+    port = os.getenv("PGPORT") or st.secrets.get("PGPORT")
+    dbname = os.getenv("PGDATABASE") or st.secrets.get("PGDATABASE")
 
     database_url = (
         f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}"
